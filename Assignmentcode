@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+vector<int> bestCoordinate(vector<vector<int>>& towers, int radius) {
+    int max_quality = 0;
+    vector<int> result = {0, 0};
+
+    for (int x = 0; x <= 50; x++) {
+        for (int y = 0; y <= 50; y++) {
+            int quality = 0;
+            for (auto& tower : towers) {
+                int distance = sqrt(pow(x - tower[0], 2) + pow(y - tower[1], 2));
+                if (distance <= radius) {
+                    quality += floor(tower[2] / (1 + distance));
+                }
+            }
+            if (quality > max_quality) {
+                max_quality = quality;
+                result = {x, y};
+            }
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    vector<vector<int>> towers = {{1, 2, 5}, {2, 1, 7}, {3, 1, 9}};
+    int radius = 2;
+    vector<int> result = bestCoordinate(towers, radius);
+    cout << "[" << result[0] << ", " << result[1] << "]" << endl;
+    return 0;
+}
